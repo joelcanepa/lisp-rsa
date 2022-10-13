@@ -5,6 +5,8 @@ exec ros +Q -- $0 "$@"
 |#
 
 (load "packages.lisp")
+(load "cl-primality.lisp")
+(load "mod.lisp")
 (load "rsa.lisp")
 
 (defpackage :ros.script.rsa.3874622299
