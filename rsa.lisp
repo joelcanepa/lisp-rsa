@@ -1,6 +1,6 @@
 (in-package :rsa)
 
-;; definicion e inicializacion de parametros rsa
+;; definition of rsa parameters
 (setq p nil)
 
 (setq q nil)
@@ -13,73 +13,72 @@
 
 (setq d nil)
 
-;; Defino un estado inicial o semilla para la generaci�n pseudoaleatoria de numeros
+;; A random state or random seed is defined for the pseudo random number generator
 (setq random-state (make-random-state t))
 
-;; Genera un numero pseudoaleatorio de n bits (entre cero y 2^n-bits)
+;; Generates a pseudo random number of n bits (between zero and 2^n bits)
 (defun random-n-bits (bits)
   (random (expt 2 bits) random-state))
 
-;; devuelve un numero primo.
-(defun generar-primo (bits)
-  ; numero de iteraciones
+;; returns (with an error probability of 2^-100) a prime number
+;; by NIST FIPS 186-5 Digital Signature Standard
+(defun generate-prime (bits)
+  ;; k = number of miller rabin test rounds to perform
   (setq k 0)
-  ;; con una probabilidad de error
-  ;; de 2^-100 segun NIST FIPS 186-5
   (cond
      ((eq bits 512)  (setq k 7))
      ((eq bits 1024) (setq k 4))
      ((eq bits 1536) (setq k 3))
      ((eq bits 2048) (setq k 2))
   )
-  ;; se itera hasta encontrar un numero
-  ;; que pase el test de M-R
+  ;; loops until a number passes the miller rabin primality test
   (loop
-     (setq numero (random-n-bits bits))
-  (when (eq (miller-rabin  numero k) numero) (return numero))))
+     (setq number (random-n-bits bits))
+  (when (eq (miller-rabin  number k) number) (return number))))
 
-;; calcula el valor de n
+;; calculates parameter n
 (defun calc-n (p q)
   (* p q))
 
-;; calcula el valor de phi-n, usando la funcion de carmichael
-;; asumiendo que p y q son primos, entonces la funcion se puede calcular como
-;; el minimo comun multiplo entre p-1 y q-1
+;; calculates parameter phi-n using carmichael's function
+;; assuming that p and q are prime numbers, then the function can be
+;; calculated as the least common multiple between p-1 and q-1
 (defun fun-carmichael (p q)
   (lcm (- p 1) (- q 1)))
 
-;; calcula el valor de e (clave publica)
-;; se busca un numero al azar e tal que  1<e<phi-n, y e, phi-n son coprimos
+;; calculates parameter e (the public key)
+;; seeks a random number that satisfies:
+;; 1<e<phi-n where e and phi-n are coprime numbers
 (defun calc-e (phi-n)
   (loop
      (setq e (+ (random (- phi-n 1) random-state) 1))
   (when (eq (coprime phi-n e) t) (return e))))
 
-;; calcula el valor de d (clave privada)
-;; halla el inverso d de e = 1 mod phi-n
+;; calculates parameter d (the private key)
+;; finds the modular inverse 'd' of e = 1 mod phi-n
 (defun calc-d (phi-n e)
   (inverse e phi-n))
 
-;; Calcula todos los valores de rsa
+;; Calculates all rsa parameters
 (defun generar-claves (bits)
-  (format t "Generando claves...~%")
-  (setq p (generar-primo bits))
-  (setq q (generar-primo bits))
+  (format t "Generating rsa keys...~%")
+  (setq p (generate-prime bits))
+  (setq q (generate-prime bits))
   (setq n (calc-n p q))
   (setq phi-n (fun-carmichael p q))
   (setq e (calc-e phi-n))
   (setq d (calc-d phi-n e))
-  (format t "Generacion de claves completa.~%"))
+  (format t "Key generation completed.~%"))
 
-;; funcion de cifrado rsa
+;; rsa encryption
 (defun encrypt (m e n)
   (expt-mod m e n))
 
-;; funcion de descifrado rsa
+;; rsa decryption
 (defun decrypt (c d n)
   (expt-mod c d n))
 
-;; muestra por pantalla todos los valores de rsa
+;; outputs all rsa parameters
 (defun print-rsa ()
   (format t "p: ~A~%" p)
   (format t "q: ~A~%" q)
