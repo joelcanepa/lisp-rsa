@@ -1,0 +1,19 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros +Q -- $0 "$@"
+|#
+
+(load "packages.lisp")
+(load "rsa.lisp")
+
+(defpackage :ros.script.rsa.3874622299
+  (:use :cl :rsa))
+(in-package :ros.script.rsa.3874622299)
+
+(defun main (bits &rest argv)
+  (declare (ignorable argv))
+  (format t "~A~%" bits)
+  (print-rsa)
+)
+;;; vim: set ft=lisp lisp:

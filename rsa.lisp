@@ -13,12 +13,9 @@
 
 (setq d nil)
 
-;; A random state or random seed is defined for the pseudo random number generator
-(setq random-state (make-random-state t))
-
 ;; Generates a pseudo random number of n bits (between zero and 2^n bits)
 (defun random-n-bits (bits)
-  (random (expt 2 bits) random-state))
+  (random (expt 2 bits) (make-random-state t)))
 
 ;; returns (with an error probability of 2^-100) a prime number
 ;; by NIST FIPS 186-5 Digital Signature Standard
@@ -51,7 +48,7 @@
 ;; 1<e<phi-n where e and phi-n are coprime numbers
 (defun calc-e (phi-n)
   (loop
-     (setq e (+ (random (- phi-n 1) random-state) 1))
+     (setq e (+ (random (- phi-n 1) (make-random-state t)) 1))
   (when (eq (coprime phi-n e) t) (return e))))
 
 ;; calculates parameter d (the private key)
