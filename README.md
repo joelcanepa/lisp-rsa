@@ -15,6 +15,11 @@ Example:
 
 <pre><code>$ ./rsa 1024 </code></pre>
 
+Three files containing the key pair generated and the exponent will be created:
+* public
+* private
+* exponent
+
 ## Recommendation
 **It is recommended you choose one of the following key lengths:**
 
