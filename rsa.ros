@@ -1,0 +1,40 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros +Q -- $0 "$@"
+|#
+
+(load "packages.lisp")
+(load "cl-primality.lisp")
+(load "mod.lisp")
+(load "rsa.lisp")
+
+(defpackage :ros.script.rsa.3874622299
+  (:use :cl :rsa))
+(in-package :ros.script.rsa.3874622299)
+
+(defun main (bits &rest argv)
+  (declare (ignorable argv))
+  (rsa::generate-keys (parse-integer bits))
+  ;(print-rsa)
+
+  ;; write generated keys to file
+  (with-open-file (str "n"
+                      :direction :output
+                      :if-exists :supersede
+                      :if-does-not-exist :create)
+    (format str "~A~%" (write-to-string rsa::n :base 16)))
+
+  (with-open-file (str "e"
+                    :direction :output
+                    :if-exists :supersede
+                    :if-does-not-exist :create)
+  (format str "~A~%" (write-to-string rsa::e :base 16)))
+
+  (with-open-file (str "d"
+                    :direction :output
+                    :if-exists :supersede
+                    :if-does-not-exist :create)
+  (format str "~A~%" (write-to-string rsa::d :base 16)))
+)
+;;; vim: set ft=lisp lisp:

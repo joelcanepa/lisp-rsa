@@ -82,18 +82,18 @@
 
 ;;<<,2>>=
 
-;; se modifico la funcion original para que en lugar de recibir la chance de falso positivo
-;; reciba el numero de iteraciones o pasadas a realizar del algoritmo rabin-miller
+;; the original cl-primality function was modified to receive the number of rounds to
+;; perform the miller rabbin test, instead of the error probability
 (defun miller-rabin (n &optional (iterations 10))
   "Miller-Rabin probabilistic primality test:
 
 Checks if N is prime with the chance of a false positive less than
 CHANCE-OF-ERROR.  This algorithm never gives false negatives."
-;; la probabilidad de tener un falso positivo es de (ceiling (log chance-of-error 1/4))
+;; the probability of error (false positive) is (ceiling (log chance-of-error 1/4))
   (declare (optimize (speed 3) (debug 0)))
   (cond ((= n 1) nil)
         ((= n 2) n)
-        ;; n-iter define el numero de iteraciones a realizar del algoritmo miller-rabin
+        ;; n-iter defines the number of iterations or passes of miller rabin test to perform
         (t (let ((n-iter iterations))
              (labels
                  ((rec (n n-iter)
@@ -117,8 +117,8 @@ CHANCE-OF-ERROR.  This algorithm never gives false negatives."
                      ((or ret (= i s)) (if (/= i s) t))) n)
                (t nil)))))
 
-;; se agrego la funcion coprime que verifica si dos numeros son coprimos
-;; perteneciente a el paquete LisPrime D. Radisavljević
+;; added coprime.lisp function form the LisPrime package
+;; from D. Radisavljević
 (defun coprime (firstnum secondnum)
 (SETQ  numcheck 0)
 (if (eq (gcd firstnum secondnum) 1) (setQ numcheck 1) (setQ numcheck 0))

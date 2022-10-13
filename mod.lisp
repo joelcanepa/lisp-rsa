@@ -12,22 +12,14 @@
 
 (in-package rsm.mod)
 
-(eval-when (:compile-toplevel)
-  (declaim (optimize (speed 3) (debug 0) (safety 1) (space 0) #+lispworks(float 0))))
-
-
-(declaim (ftype (function (integer &rest integer) integer) +))
-
-(defun + (mod &rest args)
+(defun plus (mod &rest args)
   "Add <args> in Mod <mod> arithmetic.
 Example: (rsm.mod:+ 3 3 5)
             2"
   (reduce #'(lambda (x y) (mod (cl:+ (mod x mod) (mod y mod)) mod)) 
           args :initial-value 0))
 
-(declaim (ftype (function (integer &rest integer) integer) *))
-
-(defun * (mod &rest args)
+(defun mult (mod &rest args)
   "Multiply <args> in Mod <mod> arithmetic.
 Example: (rsm.mod:* 3 2 5)
             1"
@@ -69,14 +61,14 @@ Example: (rsm.mod:^ 7 2134145213317 33 :e-phi 20)
         :with nn = n
         :while (> nn 0) 
         :if (oddp nn) :do
-          (setf prd (mod (* mod prd pow) mod))
+          (setf prd (mod (mult mod prd pow) mod))
           (when (= prd 0)
             (return 0))
           (setf nn (/ (1- nn) 2))
-          (setf pow (* mod pow pow))
+          (setf pow (mult mod pow pow))
         :else :do
              (setf nn (/ nn 2))
-             (setf pow (* mod pow pow))
+             (setf pow (mult mod pow pow))
         :finally (return prd))))
 
 (defun euler-phi (n)
@@ -232,7 +224,7 @@ not relatively prime.~%" mod modi))))
         as a in as do
           (let* ((Mi (/ M m))
                  (Ni (inverse Mi m)))
-            (setf x (+ M x (* M (mod a m) Mi Ni)))))
+            (setf x (plus M x (mult M (mod a m) Mi Ni)))))
     x))
 
 
