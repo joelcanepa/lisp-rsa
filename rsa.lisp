@@ -30,8 +30,8 @@
   )
   ;; loops until a number passes the miller rabin primality test
   (loop
-     (setq number (random-n-bits bits))
-  (when (eq (miller-rabin  number k) number) (return number))))
+     (setq num (random-n-bits bits))
+  (when (eq (miller-rabin  num k) num) (return num))))
 
 ;; calculates parameter n
 (defun calc-n (p q)
@@ -57,14 +57,20 @@
   (inverse e phi-n))
 
 ;; Calculates all rsa parameters
-(defun generar-claves (bits)
+(defun generate-keys (bits)
   (format t "Generating rsa keys...~%")
   (setq p (generate-prime bits))
+  (format t "    generated p.~%")
   (setq q (generate-prime bits))
+  (format t "    generated q.~%")
   (setq n (calc-n p q))
+  (format t "    calculated n.~%")
   (setq phi-n (fun-carmichael p q))
+  (format t "    calculated phi-n.~%")
   (setq e (calc-e phi-n))
+  (format t "    calculated e.~%")
   (setq d (calc-d phi-n e))
+  (format t "    calculated d.~%")
   (format t "Key generation completed.~%"))
 
 ;; rsa encryption
