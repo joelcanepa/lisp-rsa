@@ -17,13 +17,13 @@ Example:
 <pre><code>$ ./rsa 1024 </code></pre>
 
 ### Windows
-Download the latest release and run `rsa.exe` via cmd:
+Download the latest release and run `rsa.exe` via PowerShell:
 
-<pre><code> start rsa.exe (key length in bits) </code></pre>
+<pre><code>> .\rsa.exe (key length in bits) </code></pre>
 
 Example:
 
-<pre><code> start rsa.exe 1024 </code></pre>
+<pre><code>> .\rsa.exe 1024 </code></pre>
 
 Three files containing the key pair generated and the exponent will be created:
 * public.key
@@ -40,8 +40,9 @@ Three files containing the key pair generated and the exponent will be created:
 * 1024
 * 1536
 * 2048
+* 4096
 
-These key lengths are covered in NIST FIPS 186-5 and they have explicitly coded the necessary rounds of miller rabin test to guarantee a probability error of 2^-100.
+These key lengths (excepct for 4096) are covered in NIST FIPS 186-5 and they have the necessary rounds of miller rabin test coded to guarantee a probability error of 2^-100.
 
 ## Extra options
 

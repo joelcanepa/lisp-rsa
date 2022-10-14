@@ -27,6 +27,12 @@
      ((eq bits 1024) (setq k 4))
      ((eq bits 1536) (setq k 3))
      ((eq bits 2048) (setq k 2))
+     ;; ! rsa 4096 not defined in NIST FIPS 186-5
+     ((eq bits 4096) (setq k 1))
+     ;; invalid key length
+     (t (progn
+          (format t "Invalid key length. Choose one of the following: 512 - 1024 - 1036 - 2048 - 4096~%")
+          (sb-ext:quit)))
   )
   ;; loops until a number passes the miller rabin primality test
   (loop
@@ -60,17 +66,11 @@
 (defun generate-keys (bits)
   (format t "Generating rsa keys...~%")
   (setq p (generate-prime bits))
-  (format t "    generated p.~%")
   (setq q (generate-prime bits))
-  (format t "    generated q.~%")
   (setq n (calc-n p q))
-  (format t "    calculated n.~%")
   (setq phi-n (fun-carmichael p q))
-  (format t "    calculated phi-n.~%")
   (setq e (calc-e phi-n))
-  (format t "    calculated e.~%")
   (setq d (calc-d phi-n e))
-  (format t "    calculated d.~%")
   (format t "Key generation completed.~%"))
 
 ;; rsa encryption
