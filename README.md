@@ -3,8 +3,6 @@
 ## Description
 Common Lisp implementation of the asymmetric encryption algorithm RSA.
 
-This was my final project for the subject "Programming Paradigms IV" in University. This work along with an article ("Programación Funcional, RSA y Firmas Digitales con Lisp") were accepted and published in Argentina's National Congress of Computer Engineering / Information Systems (CoNaIISI) 2022.
-
 ## Running the executable binary
 
 ### Linux
