@@ -42,7 +42,7 @@ Three files containing the key pair generated and the exponent will be created:
 * 2048
 * 4096
 
-These key lengths (excepct for 4096) are covered in NIST FIPS 186-5 and they have the necessary rounds of miller rabin test coded to guarantee a probability error of 2^-100.
+These key lengths (except for 4096) are covered in NIST FIPS 186-5 and they have the necessary rounds of miller rabin test coded to guarantee a probability error of 2^-100.
 
 ## Extra options
 
@@ -69,7 +69,7 @@ Example:
 
 <pre><code>$ ./rsa.ros 1024 </code></pre>
 
-# Dependecies
+# Dependencies
 
 The project includes some open source packages, with modifications to fit the project's needs, to deal wih modular arithmetic and the miller rabin test:
 
