@@ -1,4 +1,4 @@
-# cl-rsa
+# lisp-rsa
 
 ## Description
 Common Lisp implementation of the asymmetric encryption algorithm RSA.
@@ -7,6 +7,7 @@ This was my final project for the subject "Programming Paradigms IV" in Universi
 
 ## Running the executable binary
 
+### Linux
 Download the latest release and run `rsa`:
 
 <pre><code>$ ./rsa (key length in bits) </code></pre>
@@ -15,10 +16,22 @@ Example:
 
 <pre><code>$ ./rsa 1024 </code></pre>
 
+### Windows
+Download the latest release and run `rsa.exe` via PowerShell:
+
+<pre><code>> .\rsa.exe (key length in bits) </code></pre>
+
+Example:
+
+<pre><code>> .\rsa.exe 1024 </code></pre>
+
 Three files containing the key pair generated and the exponent will be created:
-* public
-* private
-* exponent
+* public.key
+  * public key exponent
+  * modulus
+* private.key
+  * private key exponent
+  * modulus
 
 ## Recommendation
 **It is recommended you choose one of the following key lengths:**
@@ -27,8 +40,16 @@ Three files containing the key pair generated and the exponent will be created:
 * 1024
 * 1536
 * 2048
+* 4096
 
-These key lengths are covered in NIST FIPS 186-5 and they have explicitly coded the necessary rounds of miller rabin test to guarantee a probability error of 2^-100.
+These key lengths (except for 4096) are covered in NIST FIPS 186-5 and they have the necessary rounds of miller rabin test coded to guarantee a probability error of 2^-100.
+
+## Extra options
+
+Run the binary or script with arguments: "--show" to print all generated and calculated rsa parameters.
+
+Linux example:
+<pre><code>$ ./rsa 1024 --show</code></pre>
 
 ## Running the script from source
 ### You will need:
@@ -48,7 +69,7 @@ Example:
 
 <pre><code>$ ./rsa.ros 1024 </code></pre>
 
-# Dependecies
+# Dependencies
 
 The project includes some open source packages, with modifications to fit the project's needs, to deal wih modular arithmetic and the miller rabin test:
 
