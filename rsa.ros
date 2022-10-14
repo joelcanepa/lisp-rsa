@@ -15,26 +15,53 @@ exec ros +Q -- $0 "$@"
 
 (defun main (bits &rest argv)
   (declare (ignorable argv))
-  (rsa::generate-keys (parse-integer bits))
-  ;(print-rsa)
+
+  ;; argv is of type list
+  ;; we can access each argument with car and cdr
+  ;; if no arguments are passed, argv is
+    ;;(format t "~A~%" (car argv))
+    ;;(format t "~A~%" (type-of (car argv)))
+
+
+  ;; argument validation
+  (cond
+    ;; no arguments are passed
+    ((eq argv nil)
+      (rsa::generate-keys (parse-integer bits)))
+
+    ;; output rsa parameters
+    ((string= (car argv) "--show") 
+      (progn 
+        (rsa::generate-keys (parse-integer bits)) 
+        (print-rsa)))
+
+    ;; invalid argument
+    (t 
+      (progn 
+        (format t "Invalid argument ~A~%" argv)
+        (sb-ext:quit)))
+  )
 
   ;; write generated keys to file
-  (with-open-file (str "n"
+  (write-keys)
+)
+
+;; writes the generated keys to files
+(defun write-keys ()
+  (with-open-file (str "public.key"
                       :direction :output
                       :if-exists :supersede
                       :if-does-not-exist :create)
-    (format str "~A~%" (write-to-string rsa::n :base 16)))
-
-  (with-open-file (str "e"
-                    :direction :output
-                    :if-exists :supersede
-                    :if-does-not-exist :create)
-  (format str "~A~%" (write-to-string rsa::e :base 16)))
-
-  (with-open-file (str "d"
-                    :direction :output
-                    :if-exists :supersede
-                    :if-does-not-exist :create)
-  (format str "~A~%" (write-to-string rsa::d :base 16)))
+    (format str "~A~%~A~%" 
+      (write-to-string rsa::e :base 16)
+      (write-to-string rsa::n :base 16)))
+  
+  (with-open-file (str "private.key"
+                      :direction :output
+                      :if-exists :supersede
+                      :if-does-not-exist :create)
+    (format str "~A~%~A~%" 
+      (write-to-string rsa::d :base 16)
+      (write-to-string rsa::n :base 16)))
 )
 ;;; vim: set ft=lisp lisp:
