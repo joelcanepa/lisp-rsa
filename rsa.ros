@@ -16,15 +16,6 @@ exec ros +Q -- $0 "$@"
 (defun main (bits &rest argv)
   (declare (ignorable argv))
 
-  ;; argv is of type list
-  ;; we can access each argument with car and cdr
-  ;; if no arguments are passed, argv is nil
-    ;;(format t "~A~%" (car argv))
-    ;;(format t "~A~%" (type-of (car argv)))
-
-    (format t "~A~%" (cdr argv))
-    (format t "~A~%" (type-of (cdr argv)))
-
   ;; argument validation
   (cond
     ;; no arguments are passed
