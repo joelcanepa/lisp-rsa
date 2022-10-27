@@ -12,7 +12,7 @@ Common Lisp implementation of the asymmetric encryption algorithm RSA for a univ
 <pre><code>$ md5sum file </code></pre>
 
 3. Encrypt with the private key the hash (copy and paste the hash) and write it to file.sig:
-<pre><code>$ ./rsa encrypt public.key hash >> file.sig</code></pre>
+<pre><code>$ ./rsa encrypt private.key hash >> file.sig</code></pre>
 
 Send the file and it's signature.
 
