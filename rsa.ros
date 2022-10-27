@@ -18,25 +18,52 @@ exec ros +Q -- $0 "$@"
 
   ;; argument validation
   (cond
-    ;; no arguments are passed
+    ;; encrypt
+    ((not (arg-is-number bits))
+      (cond
+        ((string= bits "encrypt")
+          (progn 
+            (setq exponent nil)
+            (setq modulus nil)
+            (read-key (car argv))
+            (setq exponent (parse-integer (string exponent) :radix 16))
+            (setq modulus (parse-integer (string modulus) :radix 16))
+            (setq msg (parse-integer (car (cdr argv)) :radix 16))
+            (format t "~X~%" (rsa::encrypt msg exponent modulus))
+          )
+        )
+        ((string= bits "decrypt")
+          (progn 
+            (setq exponent nil)
+            (setq modulus nil)
+            (read-key (car argv))
+            (setq exponent (parse-integer (string exponent) :radix 16))
+            (setq modulus (parse-integer (string modulus) :radix 16))
+            (setq msg (parse-integer (car (cdr argv)) :radix 16))
+            (format t "cipher text: ~X~%" (rsa::decrypt msg exponent modulus))
+          )
+        )
+      )
+    )
+    ;; bits with no arguments are passed
     ((eq argv nil)
-      (rsa::generate-keys (parse-integer bits)))
+      (progn 
+        (rsa::generate-keys (parse-integer bits)) 
+        (write-keys)))
 
-    ;; output rsa parameters
+    ;; bits with output rsa parameters
     ((and (string= (car argv) "--show") (eq (cdr argv) nil)) 
       (progn 
         (rsa::generate-keys (parse-integer bits)) 
-        (print-rsa)))
+        (print-rsa)
+        (write-keys)))
 
-    ;; invalid argument
+    ;;invalid argument
     (t 
       (progn 
         (format t "Invalid argument ~A~%" argv)
         (sb-ext:quit)))
   )
-
-  ;; write generated keys to file
-  (write-keys)
 )
 
 ;; writes the generated keys to files
@@ -58,3 +85,31 @@ exec ros +Q -- $0 "$@"
       (write-to-string rsa::n :base 16)))
 )
 ;;; vim: set ft=lisp lisp:
+
+(defun read-key (filename)
+  (cond
+    ((or (string= filename "public.key") (string= filename "private.key"))
+      (let ((in (open filename :if-does-not-exist nil)))
+        (when in
+          (setq exponent (read-line in))
+          (setq modulus (read-line in))
+          (close in))))
+    (t (progn 
+      (format t "invalid file~%")
+      (sb-ext:quit)))
+  )
+)
+
+
+
+; returns T if string arg contains only numbers
+; returns NIL if string contains any non numeric characters
+(defun arg-is-number (arg &optional i)
+    (if (eq i nil) (setq i 0))
+    (cond
+        ((eq i (length arg)) t)
+        ((< (char-code (char arg i)) 48) nil)
+        ((> (char-code (char arg i)) 57) nil)
+        (t (arg-is-number arg (+ i 1)))
+    )
+)

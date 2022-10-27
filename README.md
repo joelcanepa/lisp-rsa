@@ -1,7 +1,30 @@
 # lisp-rsa
 
 ## Description
-Common Lisp implementation of the asymmetric encryption algorithm RSA.
+Common Lisp implementation of the asymmetric encryption algorithm RSA for a university project submitted to CoNaIISI 2022.
+
+## Steps to create a digital signature of a file
+### To digitally sign a file:
+1. Generate a pair of RSA keys:
+<pre><code>$ ./rsa 1024 </code></pre>
+
+2. Calculate the hash of the desired file to sign:
+<pre><code>$ md5sum file </code></pre>
+
+3. Encrypt with the private key the hash (copy and paste the hash) and write it to file.sig:
+<pre><code>$ ./rsa encrypt public.key hash >> file.sig</code></pre>
+
+Send the file and it's signature.
+
+### To check the integrity and authenticity of the file:
+
+1. Decrypt the signature with the sender's public key (in signature paste the file.sig content):
+<pre><code>$ ./rsa decrypt public.key signature</code></pre>
+
+2. Compare the previous command output with the hash of the file you received:
+<pre><code>$ md5sum file </code></pre>
+
+If the calculated hash and the hash obtained from decrypting the signature with the sender's public key are equal the file has maintained integrity and is authentic.
 
 ## Running the executable binary
 
