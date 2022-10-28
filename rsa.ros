@@ -40,7 +40,7 @@ exec ros +Q -- $0 "$@"
             (setq exponent (parse-integer (string exponent) :radix 16))
             (setq modulus (parse-integer (string modulus) :radix 16))
             (setq msg (parse-integer (car (cdr argv)) :radix 16))
-            (format t "cipher text: ~X~%" (rsa::decrypt msg exponent modulus))
+            (format t "~X~%" (rsa::decrypt msg exponent modulus))
           )
         )
       )
