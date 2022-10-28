@@ -9,7 +9,10 @@ Common Lisp implementation of the asymmetric encryption algorithm RSA for a univ
 <pre><code>$ ./rsa 1024 </code></pre>
 
 2. Calculate the hash of the desired file to sign:
+Linux:
 <pre><code>$ md5sum file </code></pre>
+Windows PowerShell:
+<pre><code>$ Get-FileHash file </code></pre>
 
 3. Encrypt with the private key the hash (copy and paste the hash) and write it to file.sig:
 <pre><code>$ ./rsa encrypt private.key hash >> file.sig</code></pre>
