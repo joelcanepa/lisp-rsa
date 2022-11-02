@@ -75,6 +75,11 @@ Run the binary or script with arguments: "--show" to print all generated and cal
 Linux example:
 <pre><code>$ ./rsa 1024 --show</code></pre>
 
+## Troubleshooting
+
+If you're unable to run the executable ("Permission denied") please make sure you have the user rights are correct: 
+<pre><code>$ sudo chmod +x rsa</code></pre>
+
 ## Running the script from source
 ### You will need:
 * [Roswell](https://roswell.github.io/Home.html): Common Lisp environment setup Utility - with [SBCL](https://www.sbcl.org/)
