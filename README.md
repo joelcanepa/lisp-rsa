@@ -77,7 +77,7 @@ Linux example:
 
 ## Troubleshooting
 
-If you're unable to run the executable ("Permission denied") please make sure you have the user rights are correct: 
+If you're unable to run the executable ("Permission denied") please make sure the file's user rights are correct: 
 <pre><code>$ sudo chmod +x rsa</code></pre>
 
 ## Running the script from source
